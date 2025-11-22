@@ -1,0 +1,1803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P2P All-Stars Complete Playbook</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #000;
+            color: #fff;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            padding: 15px;
+            line-height: 1.6;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 3px solid #00d4ff;
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            color: #00d4ff;
+            margin-bottom: 8px;
+        }
+
+        .header .subtitle {
+            font-size: 16px;
+            color: #888;
+        }
+
+        /* TAB NAVIGATION */
+        .tab-nav {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #333;
+            padding-bottom: 10px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background: #1a1a1a;
+            border: 2px solid #333;
+            color: #fff;
+            padding: 12px 24px;
+            border-radius: 8px 8px 0 0;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .tab-btn:hover {
+            border-color: #00d4ff;
+            background: #2a2a2a;
+        }
+
+        .tab-btn.active {
+            background: #00d4ff;
+            color: #000;
+            border-color: #00d4ff;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* SITUATION SELECTOR */
+        .situation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .situation-card {
+            background: #1a1a1a;
+            border: 2px solid #333;
+            border-radius: 10px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .situation-card:hover {
+            border-color: #00d4ff;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(0,212,255,0.3);
+        }
+
+        .situation-card .situation-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #00d4ff;
+            margin-bottom: 5px;
+            text-align: center;
+        }
+
+        .situation-card .when-to-use {
+            font-size: 13px;
+            color: #888;
+            text-align: center;
+            margin-bottom: 10px;
+            font-style: italic;
+        }
+
+        .situation-split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+
+        .offense-situation, .defense-situation {
+            padding: 12px;
+            border-radius: 6px;
+            border: 2px solid;
+        }
+
+        .offense-situation {
+            background: #1a1a00;
+            border-color: #ffeb3b;
+        }
+
+        .defense-situation {
+            background: #1a0000;
+            border-color: #f44336;
+        }
+
+        .situation-split h4 {
+            font-size: 14px;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .offense-situation h4 {
+            color: #ffeb3b;
+        }
+
+        .defense-situation h4 {
+            color: #f44336;
+        }
+
+        .situation-split p {
+            font-size: 13px;
+            line-height: 1.4;
+            color: #ccc;
+        }
+
+        .situation-card .situation-desc {
+            font-size: 14px;
+            color: #aaa;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        .package-badge {
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 18px;
+            text-align: center;
+        }
+
+        .badge-red { background: #d32f2f; color: #fff; }
+        .badge-blue { background: #1976d2; color: #fff; }
+        .badge-yellow { background: #f9a825; color: #000; }
+        .badge-white { background: #e0e0e0; color: #000; }
+        .badge-green { background: #388e3c; color: #fff; }
+
+        /* PACKAGE DETAIL */
+        .package-detail {
+            display: none;
+            background: #0a0a0a;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border: 2px solid #333;
+        }
+
+        .package-detail.active {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+            animation: fadeIn 0.3s;
+        }
+
+        @media (min-width: 1024px) {
+            .package-detail.active {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .package-header {
+                grid-column: 1 / -1;
+            }
+            
+            .philosophy-box {
+                grid-column: 1 / -1;
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .package-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #333;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .package-name {
+            font-size: 36px;
+            font-weight: bold;
+        }
+
+        .close-btn {
+            background: #d32f2f;
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .close-btn:hover {
+            background: #f44336;
+        }
+
+        .philosophy-box {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            border-left: 5px solid #00d4ff;
+        }
+
+        .philosophy-box h3 {
+            color: #00d4ff;
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+
+        .philosophy-box p {
+            color: #ccc;
+            font-size: 16px;
+        }
+
+        /* FORMATIONS */
+        .formation-section {
+            margin-bottom: 40px;
+        }
+
+        .formation-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #333;
+        }
+
+        .formation-header h2 {
+            font-size: 26px;
+            color: #ffeb3b;
+        }
+
+        .formation-type {
+            background: #1a1a1a;
+            padding: 8px 16px;
+            border-radius: 5px;
+            font-size: 14px;
+            color: #888;
+            border: 1px solid #333;
+        }
+
+        .formation-grid {
+            background: #1a1a1a;
+            border: 2px solid #333;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .position-row {
+            display: grid;
+            grid-template-columns: 150px 1fr;
+            gap: 20px;
+            padding: 15px;
+            border-bottom: 1px solid #2a2a2a;
+            align-items: start;
+        }
+
+        .position-row:last-child {
+            border-bottom: none;
+        }
+
+        .position-label {
+            font-weight: bold;
+            color: #00d4ff;
+            font-size: 18px;
+        }
+
+        .position-details {
+            flex: 1;
+        }
+
+        .player-name {
+            font-size: 22px;
+            color: #fff;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .position-desc {
+            font-size: 14px;
+            color: #aaa;
+            line-height: 1.5;
+        }
+
+        .coaching-points {
+            background: #0d1b0d;
+            border-left: 5px solid #4caf50;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .coaching-points h4 {
+            color: #4caf50;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .coaching-points ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .coaching-points li {
+            padding: 8px 0;
+            font-size: 15px;
+            color: #ccc;
+            line-height: 1.6;
+        }
+
+        .coaching-points li::before {
+            content: "▸ ";
+            color: #4caf50;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        .coaching-points strong {
+            color: #4caf50;
+        }
+
+        /* DEFENSE SPECIFIC */
+        .defense-scheme {
+            background: #1a0a0a;
+            border: 2px solid #d32f2f;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .scheme-title {
+            font-size: 22px;
+            color: #d32f2f;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .defense-formation {
+            display: grid;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .defense-line {
+            display: grid;
+            grid-template-columns: 140px 120px 1fr;
+            gap: 15px;
+            align-items: center;
+            padding: 15px;
+            background: #0d0d0d;
+            border-radius: 8px;
+            border-left: 5px solid #d32f2f;
+        }
+
+        .defense-line.coverage {
+            border-left-color: #1976d2;
+        }
+
+        .defense-line.safety {
+            border-left-color: #f9a825;
+        }
+
+        .defense-role {
+            font-weight: bold;
+            color: #ffeb3b;
+            font-size: 16px;
+        }
+
+        .defense-player {
+            font-size: 20px;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .defense-responsibility {
+            font-size: 14px;
+            color: #aaa;
+        }
+
+        .key-points {
+            background: #1a1a0a;
+            border: 2px solid #f9a825;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .key-points h4 {
+            color: #f9a825;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        .key-points ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .key-points li {
+            padding: 10px 0;
+            font-size: 15px;
+            color: #ccc;
+            border-bottom: 1px solid #2a2a0a;
+        }
+
+        .key-points li:last-child {
+            border-bottom: none;
+        }
+
+        .key-points li::before {
+            content: "⚡ ";
+            margin-right: 8px;
+        }
+
+        /* PLAYER CARDS */
+        .player-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+        }
+
+        .player-card {
+            background: #1a1a1a;
+            border: 2px solid #333;
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .player-card-header {
+            font-size: 24px;
+            font-weight: bold;
+            color: #00d4ff;
+            margin-bottom: 15px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #333;
+        }
+
+        .assignment {
+            padding: 12px 0;
+            border-bottom: 1px solid #2a2a2a;
+        }
+
+        .assignment:last-child {
+            border-bottom: none;
+        }
+
+        .assignment-color {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 13px;
+            margin-right: 10px;
+        }
+
+        .assignment-role {
+            font-size: 15px;
+            color: #fff;
+        }
+
+        /* RULES BOX */
+        .rules-box {
+            background: #1a0a0a;
+            border: 3px solid #d32f2f;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 30px 0;
+        }
+
+        .rules-box h3 {
+            color: #d32f2f;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        .rules-box ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .rules-box li {
+            padding: 10px 0;
+            font-size: 16px;
+            line-height: 1.6;
+            border-bottom: 1px solid #2a0a0a;
+        }
+
+        .rules-box li:last-child {
+            border-bottom: none;
+        }
+
+        .rules-box li::before {
+            content: "⚠️ ";
+            margin-right: 8px;
+        }
+
+        .rules-box strong {
+            color: #f9a825;
+        }
+
+        .section-divider {
+            grid-column: 1 / -1;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #00d4ff, transparent);
+            margin: 20px 0;
+        }
+        
+        .offense-defense-label {
+            font-size: 32px;
+            font-weight: bold;
+            text-align: center;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .offense-label {
+            background: linear-gradient(135deg, #1a1a00, #2a2a00);
+            color: #ffeb3b;
+            border: 2px solid #ffeb3b;
+        }
+        
+        .defense-label {
+            background: linear-gradient(135deg, #1a0000, #2a0000);
+            color: #f44336;
+            border: 2px solid #f44336;
+        }
+
+        /* UTILITY */
+        .hidden {
+            display: none;
+        }
+
+        .success-metric {
+            background: #0a1a0a;
+            border-left: 5px solid #4caf50;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 5px;
+        }
+
+        .success-metric h4 {
+            color: #4caf50;
+            margin-bottom: 10px;
+        }
+
+        .success-metric p {
+            color: #ccc;
+            font-size: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🏈 ALL-STARS COMPLETE PLAYBOOK</h1>
+        <div class="subtitle">Pylon2Pylon Temecula | 9 Players | 5 Packages | Full Strategy Guide</div>
+    </div>
+
+    <!-- TAB NAVIGATION -->
+    <div class="tab-nav">
+        <button class="tab-btn active" onclick="switchTab('situations')">📋 Situations</button>
+        <button class="tab-btn" onclick="switchTab('packages')">🎨 All Packages</button>
+        <button class="tab-btn" onclick="switchTab('players')">👥 Player Reference</button>
+        <button class="tab-btn" onclick="switchTab('rules')">📖 Rules</button>
+    </div>
+
+    <!-- SITUATIONS TAB -->
+    <div id="situations-tab" class="tab-content active">
+        <h2 style="color: #00d4ff; margin-bottom: 20px; text-align: center; font-size: 28px;">⚡ CALL YOUR PACKAGE</h2>
+        
+        <div class="situation-grid">
+            <div class="situation-card" onclick="showPackage('red')">
+                <div class="situation-title">🔴 RED PACKAGE</div>
+                <div class="when-to-use">Your Championship Lineup - Best 6 Athletes</div>
+                
+                <div class="situation-split">
+                    <div class="offense-situation">
+                        <h4>⚡ OFFENSE</h4>
+                        <p>• 3rd & Long (8+ yards)<br>
+                        • 2-minute drill<br>
+                        • Must-score situations<br>
+                        • Need explosive play</p>
+                    </div>
+                    <div class="defense-situation">
+                        <h4>🛡️ DEFENSE</h4>
+                        <p>• Cameron speed rush<br>
+                        • Kane lockdown coverage<br>
+                        • Prevent big play<br>
+                        • Max coverage (1-1-4)</p>
+                    </div>
+                </div>
+                
+                <div class="package-badge badge-red">TAP TO VIEW FULL PACKAGE</div>
+            </div>
+
+            <div class="situation-card" onclick="showPackage('blue')">
+                <div class="situation-title">🔵 BLUE PACKAGE</div>
+                <div class="when-to-use">Balanced Attack - Most Versatile Package</div>
+                
+                <div class="situation-split">
+                    <div class="offense-situation">
+                        <h4>⚡ OFFENSE</h4>
+                        <p>• 1st Down (standard)<br>
+                        • Balanced run/pass<br>
+                        • Keep defense guessing<br>
+                        • Maintain drives</p>
+                    </div>
+                    <div class="defense-situation">
+                        <h4>🛡️ DEFENSE</h4>
+                        <p>• Double rush pressure<br>
+                        • Zone coverage (2-0-4)<br>
+                        • Force quick throws<br>
+                        • Standard situations</p>
+                    </div>
+                </div>
+                
+                <div class="package-badge badge-blue">TAP TO VIEW FULL PACKAGE</div>
+            </div>
+
+            <div class="situation-card" onclick="showPackage('yellow')">
+                <div class="situation-title">🟡 YELLOW PACKAGE</div>
+                <div class="when-to-use">Speed Package - Noah Becomes Receiver!</div>
+                
+                <div class="situation-split">
+                    <div class="offense-situation">
+                        <h4>⚡ OFFENSE</h4>
+                        <p>• 3rd & Short (1-3 yds)<br>
+                        • Red zone attack<br>
+                        • Ryan at QB<br>
+                        • Noah = mismatch weapon</p>
+                    </div>
+                    <div class="defense-situation">
+                        <h4>🛡️ DEFENSE</h4>
+                        <p>• Ronin speed rush<br>
+                        • Need stop NOW<br>
+                        • High pressure (2-0-4)<br>
+                        • Force mistakes</p>
+                    </div>
+                </div>
+                
+                <div class="package-badge badge-yellow">TAP TO VIEW FULL PACKAGE</div>
+            </div>
+
+            <div class="situation-card" onclick="showPackage('white')">
+                <div class="situation-title">⚪ WHITE PACKAGE</div>
+                <div class="when-to-use">Rest & Develop - Keep Core Players Fresh</div>
+                
+                <div class="situation-split">
+                    <div class="offense-situation">
+                        <h4>⚡ OFFENSE</h4>
+                        <p>• Up 14+ points<br>
+                        • Frank at QB<br>
+                        • Manage the game<br>
+                        • Rest Noah/Ronin/Kane</p>
+                    </div>
+                    <div class="defense-situation">
+                        <h4>🛡️ DEFENSE</h4>
+                        <p>• Solid fundamentals<br>
+                        • Don't lose the game<br>
+                        • Ryan spy critical<br>
+                        • Bend don't break (1-1-4)</p>
+                    </div>
+                </div>
+                
+                <div class="package-badge badge-white">TAP TO VIEW FULL PACKAGE</div>
+            </div>
+
+            <div class="situation-card" onclick="showPackage('green')">
+                <div class="situation-title">🟢 GREEN PACKAGE</div>
+                <div class="when-to-use">Fresh Legs Rotation - Smart Substitution</div>
+                
+                <div class="situation-split">
+                    <div class="offense-situation">
+                        <h4>⚡ OFFENSE</h4>
+                        <p>• 2nd & Long<br>
+                        • Need breather<br>
+                        • Noah + Kane core<br>
+                        • Fresh weapons around</p>
+                    </div>
+                    <div class="defense-situation">
+                        <h4>🛡️ DEFENSE</h4>
+                        <p>• Maintain quality<br>
+                        • Kane man coverage<br>
+                        • Noah safety ball hawk<br>
+                        • Fresh legs rush (1-1-4)</p>
+                    </div>
+                </div>
+                
+                <div class="package-badge badge-green">TAP TO VIEW FULL PACKAGE</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PACKAGES TAB -->
+    <div id="packages-tab" class="tab-content">
+        <!-- RED PACKAGE -->
+        <div id="red-package" class="package-detail active">
+            <div class="package-header">
+                <div class="package-name" style="color: #d32f2f;">🔴 RED PACKAGE</div>
+                <button class="close-btn" onclick="hideAllPackagesInTab()">✕ CLOSE</button>
+            </div>
+
+            <div class="philosophy-box">
+                <h3>PHILOSOPHY: CHAMPIONSHIP LINEUP</h3>
+                <p>Your best 6 athletes on the field. Use on 3rd & Long, 2-minute drill, must-score situations. This is your money package when the game is on the line.</p>
+            </div>
+
+            <!-- OFFENSE RED -->
+            <div class="offense-defense-label offense-label">⚡ OFFENSE ⚡</div>
+            <div class="formation-section">
+                <div class="formation-header">
+                    <h2>⚡ OFFENSIVE FORMATION</h2>
+                    <div class="formation-type">SPREAD / 4 WIDE</div>
+                </div>
+
+                <div class="formation-grid">
+                    <div class="position-row">
+                        <div class="position-label">CENTER</div>
+                        <div class="position-details">
+                            <div class="player-name">Kamran</div>
+                            <div class="position-desc">Best hands player at center. Snap and release immediately on quick slant or flat route. Safety valve for Noah when pressure comes.</div>
+                        </div>
+                    </div>
+
+                    <div class="position-row">
+                        <div class="position-label">QB</div>
+                        <div class="position-details">
+                            <div class="player-name">Noah</div>
+                            <div class="position-desc">Elite decision maker. Pre-snap: scan defense, identify safety depth. Post-snap: read coverage high to low. 5-second clock - know your hot route if they blitz.</div>
+                        </div>
+                    </div>
+
+                    <div class="position-row">
+                        <div class="position-label">Y (WR1)</div>
+                        <div class="position-details">
+                            <div class="player-name">Kane</div>
+                            <div class="position-desc">Primary target. Run option routes based on coverage. Against man: break sharp. Against zone: sit in holes. Best hands on team - go get contested catches.</div>
+                        </div>
+                    </div>
+
+                    <div class="position-row">
+                        <div class="position-label">X (WR2)</div>
+                        <div class="position-details">
+                            <div class="player-name">Ronin</div>
+                            <div class="position-desc">Speed threat deep ball. Stretch defense vertically. Clear out space for underneath routes. If safety cheats up, beat them deep. Run 15+ yard routes.</div>
+                        </div>
+                    </div>
+
+                    <div class="position-row">
+                        <div class="position-label">A (Slot/RB2)</div>
+                        <div class="position-details">
+                            <div class="player-name">Colton</div>
+                            <div class="position-desc">Versatile weapon. Can run power, catch screens, or run intermediate routes. Work middle of field. Find soft spots in zone. Motion pre-snap to create mismatches.</div>
+                        </div>
+                    </div>
+
+                    <div class="position-row">
+                        <div class="position-label">Z (RB1)</div>
+                        <div class="position-details">
+                            <div class="player-name">Cameron</div>
+                            <div class="position-desc">Fastest player. Jet sweeps, quick tosses, edge speed. Force defense to honor outside. When they respect speed, use it for wheel routes. Game-breaker in space.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="coaching-points">
+                    <h4>🎯 OFFENSIVE KEYS</h4>
+                    <ul>
+                        <li><strong>Tempo:</strong> Noah controls pace. Fast tempo when defense is tired, slow when you need to think.</li>
+                        <li><strong>Spacing:</strong> Receivers spread 10-12 yards apart. Force defense to cover entire field.</li>
+                        <li><strong>Speed Kills:</strong> Cameron's edge speed forces safeties to cheat outside, opens middle for Kane.</li>
+                        <li><strong>Hot Route:</strong> If they blitz, Kamran or Colton breaks flat - Noah hits it immediately.</li>
+                        <li><strong>Read Progression:</strong> Deep (Ronin) → Intermediate (Kane) → Short (Colton/Kamran) → Scramble</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- DEFENSE RED -->
+            <div class="offense-defense-label defense-label">🛡️ DEFENSE 🛡️</div>
+            <div class="formation-section">
+                <div class="formation-header">
+                    <h2>🛡️ DEFENSIVE ALIGNMENT</h2>
+                    <div class="formation-type">1-1-4 (Single Rush + RB Watch)</div>
+                </div>
+
+                <div class="defense-scheme">
+                    <div class="scheme-title">FORMATION: 1 Rusher, 1 Line (RB Watch), 4 Coverage</div>
+                    <p style="color: #aaa; margin-bottom: 20px;">Philosophy: Single rush + max coverage. Best athletes blanket field. Prevent big play at all costs.</p>
+
+                    <div class="defense-formation">
+                        <div class="defense-line">
+                            <div class="defense-role">RUSH (10yd)</div>
+                            <div class="defense-player">Cameron</div>
+                            <div class="defense-responsibility">⚡ FASTEST RUSHER - Speed rush gets there in 3 seconds. Use elite speed to pressure QB. Force quick throw or sack.</div>
+                        </div>
+
+                        <div class="defense-line">
+                            <div class="defense-role">LINE (LOS)</div>
+                            <div class="defense-player">Kamran</div>
+                            <div class="defense-responsibility">⚠️ CANNOT cross until pass/handoff. Watch RB - mirror movements. Physical player reads handoff well. Call "HANDOFF!" loud. After pass, cover RB or nearest receiver.</div>
+                        </div>
+
+                        <div class="defense-line coverage">
+                            <div class="defense-role">COVER (Man)</div>
+                            <div class="defense-player">Kane</div>
+                            <div class="defense-responsibility">Man coverage on their best WR. Elite athlete locks down. Physical coverage, compete for ball. Stay between receiver and goal line.</div>
+                        </div>
+
+                        <div class="defense-line coverage">
+                            <div class="defense-role">COVER (Man)</div>
+                            <div class="defense-player">Colton</div>
+                            <div class="defense-responsibility">Man coverage on their WR2. Physical coverage, compete for ball. Stay on hip through breaks. Break when ball is thrown.</div>
+                        </div>
+
+                        <div class="defense-line safety">
+                            <div class="defense-role">SAFETY (Deep)</div>
+                            <div class="defense-player">Noah</div>
+                            <div class="defense-responsibility">Deep middle, 15-20 yards. Best athlete = last line of defense. Read QB eyes. Help over top on deep balls. Nothing gets behind you.</div>
+                        </div>
+
+                        <div class="defense-line safety">
+                            <div class="defense-role">SAFETY (Deep)</div>
+                            <div class="defense-player">Ronin</div>
+                            <div class="defense-responsibility">Deep help. Elite speed allows range. Cover deep third. Communicate with Noah on coverage. Ball hawk on any deep throw.</div>
+                        </div>
+                    </div>
+
+                    <div class="key-points">
+                        <h4>🔑 DEFENSIVE KEYS</h4>
+                        <ul>
+                            <li><strong>Cameron's Speed Rush:</strong> FASTEST player gets after QB. Elite speed = 3 second arrival. Game changer.</li>
+                            <li><strong>Kamran's RB Watch:</strong> Physical player mirrors RB. Reads handoff perfectly. Can't cross early - most critical rule.</li>
+                            <li><strong>Kane Man Coverage:</strong> Elite athlete vs their best WR. This is a chess match - you win it.</li>
+                            <li><strong>Elite Safeties:</strong> Noah and Ronin prevent bombs. Best athletes with elite range. Give up short all day, nothing deep.</li>
+                            <li><strong>Communication:</strong> Call out routes: "DEEP!", "COMEBACK!", "CROSSING!" Help each other.</li>
+                        </ul>
+                    </div>
+
+                    <div class="success-metric">
+                        <h4>✅ SUCCESS LOOKS LIKE:</h4>
+                        <p>Sack (Cameron speed) • Incomplete pass (Kane/Colton tight coverage) • Short gain under 5 yards (force checkdown) • Interception (elite safeties) • Force punt</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BLUE PACKAGE -->
+        <div id="blue-package" class="package-detail">
+            <div class="package-header">
+                <div class="package-name" style="color: #1976d2;">🔵 BLUE PACKAGE</div>
+                <button class="close-btn" onclick="hideAllPackagesInTab()">✕ CLOSE</button>
+            </div>
+
+            <div class="philosophy-box">
+                <h3>PHILOSOPHY: BALANCED PRESSURE</h3>
+                <p>Double rush with zone coverage. Use on 1st down, standard situations. Most versatile package - good against run and pass. Forces QB to make quick decisions under pressure.</p>
+            </div>
+
+            <!-- OFFENSE BLUE -->
+            <div class="offense-defense-label offense-label">⚡ OFFENSE ⚡</div>
+            <div class="formation-section">
+                <div class="formation-header">
+                    <h2>⚡ OFFENSIVE FORMATION</h2>
+                    <div class="formation-type">BALANCED PRO</div>
+                </div>
+
+                <div class="formation-grid">
+                    <div class="position-row">
+                        <div class="position-label">CENTER</div>
+                        <div class="position-details">
+                            <div class="player-name">Frank</div>
+                            <div class="position-desc">Solid snap. Hold block point at LOS for 1-2 seconds, then release to flat. Safety valve on quick pressure.</div>
+                        </div>
+                    </div>
+
+                    <div class="position-row">
+                        <div class="position-label">QB</div>
+                        <div class="position-details">
+                            <div class="player-name">Noah</div>
+                            <div class="position-desc">Field general. Read coverage post-snap. Mix run and pass. Use play-action when run is working. Keep defense honest.</div>
+                        </div>
+                    </div>
+
+                    <div class="position-row">
+                        <div class="position-label">Y (WR1)</div>
+                        <div class="position-details">
+                            <div class="player-name">Colton</div>
+                            <div class="position-desc">Reliable hands. Work intermediate routes 8-12 yards. Find soft spots in zone. First down machine. Run crisp routes.</div>
+                        </div>
+                    </div>
+
+                    <div class="position-row">
+                        <div class="position-label">X (WR2)</div>
+                        <div class="position-details">
+                            <div class="player-name">Ronin</div>
+                            <div class="position-desc">Deep threat. Clear out or comeback routes. When safety plays deep, run comebacks at 12 yards. Beat man coverage deep.</div>
+                        </div>
+                    </div>
+
+                    <div class="position-row">
+                        <div class="position-label">A (Slot/RB2)</div>
+                        <div class="position-details">
+                            <div class="player-name">Kane</div>
+                            <div class="position-desc">Quick slants, drag routes from slot. Work across middle. Find holes in zone. Reliable target on 3rd down.</div>
+                        </div>
+                    </div>
+
+                    <div class="position-row">
+                        <div class="position-label">Z (RB1)</div>
+                        <div class="position-details">
+                            <div class="player-name">Cameron</div>
+                            <div class="position-desc">Edge speed. Force defensive rotation. Jet sweeps, tosses, screens. When they cheat up, hit wheel route.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="coaching-points">
+                    <h4>🎯 OFFENSIVE KEYS</h4>
+                    <ul>
+                        <li><strong>Balance:</strong> Mix run and pass. Don't become predictable. Keep defense guessing.</li>
+                        <li><strong>Frank's Release:</strong> After snap, hold 2 seconds then break to flat. Hot route vs blitz.</li>
+                        <li><strong>Route Combinations:</strong> Colton intermediate + Kane crossing = pick play in zone coverage.</li>
+                        <li><strong>Cameron Sweep:</strong> Motion pre-snap, jet sweep forces defense to respect edge.</li>
+                        <li><strong>Play Action:</strong> Fake handoff to Cameron, hit Ronin deep. Works great after run success.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- DEFENSE BLUE -->
+            <div class="offense-defense-label defense-label">🛡️ DEFENSE 🛡️</div>
+            <div class="formation-section">
+                <div class="formation-header">
+                    <h2>🛡️ DEFENSIVE ALIGNMENT</h2>
+                    <div class="formation-type">2-0-4 (Double Rush + Zone)</div>
+                </div>
+
+                <div class="defense-scheme">
+                    <div class="scheme-title">FORMATION: 2 Rushers, 0 Line, 4 Zone Coverage</div>
+                    <p style="color: #aaa; margin-bottom: 20px;">Philosophy: Pressure + Coverage = Chaos. Two rushers collapse pocket while 4 defenders blanket zones.</p>
+
+                    <div class="defense-formation">
+                        <div class="defense-line">
+                            <div class="defense-role">RUSH (10yd)</div>
+                            <div class="defense-player">Kane</div>
+                            <div class="defense-responsibility">Inside pressure, collapse pocket. Work with Colton to pinch QB. Arrive by 3-4 seconds. Force bad throw.</div>
+                        </div>
+
+                        <div class="defense-line">
+                            <div class="defense-role">RUSH (10yd)</div>
+                            <div class="defense-player">Colton</div>
+                            <div class="defense-responsibility">Outside contain. Force QB to step up into Kane. Work together to trap QB. One inside, one outside.</div>
+                        </div>
+
+                        <div class="defense-line coverage">
+                            <div class="defense-role">ZONE (Short)</div>
+                            <div class="defense-player">Cameron</div>
+                            <div class="defense-responsibility">Cover 0-10 yard zone on left side. Eyes on QB. Break on ball when thrown. Take away quick passes underneath.</div>
+                        </div>
+
+                        <div class="defense-line coverage">
+                            <div class="defense-role">ZONE (Short)</div>
+                            <div class="defense-player">Ronin</div>
+                            <div class="defense-responsibility">Cover 0-10 yard zone on right side. Watch crossing routes. Break on ball. Clog passing lanes. Elite speed = range.</div>
+                        </div>
+
+                        <div class="defense-line safety">
+                            <div class="defense-role">SAFETY (Deep)</div>
+                            <div class="defense-player">Noah</div>
+                            <div class="defense-responsibility">Deep left third, 10+ yards. Best athlete prevents big plays. Help underneath after completion. Ball hawk in deep zone.</div>
+                        </div>
+
+                        <div class="defense-line safety">
+                            <div class="defense-role">SAFETY (Deep)</div>
+                            <div class="defense-player">Frank</div>
+                            <div class="defense-responsibility">Deep right third, 10+ yards. Communication leader. Call out routes. Prevent bombs. Take good angles to ball.</div>
+                        </div>
+                    </div>
+
+                    <div class="key-points">
+                        <h4>🔑 DEFENSIVE KEYS</h4>
+                        <ul>
+                            <li><strong>Double Rush:</strong> Kane and Colton work together. Pinch pocket - one inside, one outside. Trap QB between you.</li>
+                            <li><strong>Zone Discipline:</strong> Cameron and Ronin stay in zones. Don't chase receivers - let them come to you. Eyes on QB.</li>
+                            <li><strong>Break on Ball:</strong> When QB throws, ATTACK the ball. Elite speed closes distance fast.</li>
+                            <li><strong>Elite Safety:</strong> Noah at deep safety = turnover threat. Frank communicates and prevents deep balls.</li>
+                            <li><strong>Most Balanced:</strong> Best package vs both run and pass. Your go-to standard defense.</li>
+                        </ul>
+                    </div>
+
+                    <div class="success-metric">
+                        <h4>✅ SUCCESS LOOKS LIKE:</h4>
+                        <p>Sack (double pressure collapses) • Forced throwaway (pressure + coverage) • Short completion with immediate tackle • Interception (Noah ball hawk)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- YELLOW PACKAGE -->
+        <div id="yellow-package" class="package-detail">
+            <div class="package-header">
+                <div class="package-name" style="color: #f9a825;">🟡 YELLOW PACKAGE</div>
+                <button class="close-btn" onclick="hideAllPackagesInTab()">✕ CLOSE</button>
+            </div>
+
+            <div class="philosophy-box">
+                <h3>PHILOSOPHY: SPEED PACKAGE</h3>
+                <p>Ryan at QB, Noah becomes receiver (huge mismatch!). Use on 3rd & Short, red zone, when you need a stop NOW. Speed rush package with aggressive defense.</p>
+            </div>
+
+            <!-- OFFENSE YELLOW -->
+            <div class="offense-defense-label offense-label">⚡ OFFENSE ⚡</div>
+            <div class="formation-section">
+                <div class="formation-header">
+                    <h2>⚡ OFFENSIVE FORMATION</h2>
+                    <div class="formation-type">TRIPS RIGHT</div>
+                </div>
+
+                <div class="formation-grid">
+                    <div class="position-row">
+                        <div class="position-label">CENTER</div>
+                        <div class="position-details">
+                            <div class="player-name">Eli</div>
+                            <div class="position-desc">Quick snap, release immediately to flat. Simple route - just get open for Ryan if pressure comes.</div>
+                        </div>
+                    </div>
+
+                    <div class="position-row">
+                        <div class="position-label">QB</div>
+                        <div class="position-details">
+                            <div class="player-name">Ryan</div>
+                            <div class="position-desc">Backup QB - keep it simple. Quick decisions. Don't force it. Hot route is Eli in flat if they blitz. Trust your playmakers.</div>
+                        </div>
+                    </div>
+
+                    <div class="position-row">
+                        <div class="position-label">Y (WR1)</div>
+                        <div class="position-details">
+                            <div class="player-name">Ronin</div>
+                            <div class="position-desc">Primary target. Speed creates separation. Ryan's go-to guy. Run sharp routes, help your QB by getting open fast.</div>
+                        </div>
+                    </div>
+
+                    <div class="position-row">
+                        <div class="position-label">X (WR2)</div>
+                        <div class="position-details">
+                            <div class="player-name">Kane</div>
+                            <div class="position-desc">Possession receiver. Reliable hands. Safety valve for Ryan. Run precise routes. Be where you're supposed to be.</div>
+                        </div>
+                    </div>
+
+                    <div class="position-row">
+                        <div class="position-label">A (Slot/RB2)</div>
+                        <div class="position-details">
+                            <div class="player-name">Noah ⭐</div>
+                            <div class="position-desc">MISMATCH ALERT! Best athlete now as receiver. Defense must account for elite player in space. Slot allows flexibility. Creates impossible matchup for defense.</div>
+                        </div>
+                    </div>
+
+                    <div class="position-row">
+                        <div class="position-label">Z (RB1)</div>
+                        <div class="position-details">
+                            <div class="player-name">Colton</div>
+                            <div class="position-desc">Speed option, quick tosses. Give him ball in space. Can also run routes out of backfield. Versatile weapon.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="coaching-points">
+                    <h4>🎯 OFFENSIVE KEYS</h4>
+                    <ul>
+                        <li><strong>Ryan's Role:</strong> Simple execution. Don't try to be Noah - just make good decisions.</li>
+                        <li><strong>Noah Advantage:</strong> Put him in slot - defense doesn't know what to do. Best athlete on field.</li>
+                        <li><strong>Quick Game:</strong> Ryan hits hot routes fast. Don't hold ball past 3 seconds.</li>
+                        <li><strong>Ronin Speed:</strong> Get him ball in space. Let speed take over.</li>
+                        <li><strong>Keep Simple:</strong> 3-4 play calls max. Execute basics perfectly.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- DEFENSE YELLOW -->
+            <div class="offense-defense-label defense-label">🛡️ DEFENSE 🛡️</div>
+            <div class="formation-section">
+                <div class="formation-header">
+                    <h2>🛡️ DEFENSIVE ALIGNMENT</h2>
+                    <div class="formation-type">2-0-4 (Speed Rush + Zone)</div>
+                </div>
+
+                <div class="defense-scheme">
+                    <div class="scheme-title">FORMATION: 2 Speed Rushers, 0 Line, 4 Coverage</div>
+                    <p style="color: #aaa; margin-bottom: 20px;">Philosophy: Overwhelm with speed. Force panic throw. High risk/high reward.</p>
+
+                    <div class="defense-formation">
+                        <div class="defense-line">
+                            <div class="defense-role">RUSH (10yd)</div>
+                            <div class="defense-player">Ronin</div>
+                            <div class="defense-responsibility">⚡ SPEED RUSH - All-out sprint. Get there in 3 seconds max. Force QB to panic. Fastest rusher creates havoc.</div>
+                        </div>
+
+                        <div class="defense-line">
+                            <div class="defense-role">RUSH (10yd)</div>
+                            <div class="defense-player">Colton</div>
+                            <div class="defense-responsibility">Outside contain rush. Force QB to step up into Ronin's speed. Work together - one speed, one contain. Trap QB.</div>
+                        </div>
+
+                        <div class="defense-line coverage">
+                            <div class="defense-role">ZONE (Short)</div>
+                            <div class="defense-player">Ryan</div>
+                            <div class="defense-responsibility">Cover 0-10 yard zone. Eyes on QB. Break hard on throws. Take away quick passes that beat the rush.</div>
+                        </div>
+
+                        <div class="defense-line coverage">
+                            <div class="defense-role">ZONE (Short)</div>
+                            <div class="defense-player">Kane</div>
+                            <div class="defense-responsibility">Cover 0-10 yard zone. Watch crossing routes. Clog throwing lanes. Make QB hold ball for Ronin to arrive.</div>
+                        </div>
+
+                        <div class="defense-line safety">
+                            <div class="defense-role">SAFETY (Deep)</div>
+                            <div class="defense-player">Eli</div>
+                            <div class="defense-responsibility">Deep middle. Smart reads. If they complete underneath, make tackle. Prevent TD. Last line of defense.</div>
+                        </div>
+
+                        <div class="defense-line safety">
+                            <div class="defense-role">SAFETY (Deep)</div>
+                            <div class="defense-player">Noah</div>
+                            <div class="defense-responsibility">Deep help. Elite instincts. Ball hawk. If QB panics under pressure, be ready for pick. Best athlete = turnover opportunity.</div>
+                        </div>
+                    </div>
+
+                    <div class="key-points">
+                        <h4>🔑 DEFENSIVE KEYS</h4>
+                        <ul>
+                            <li><strong>Ronin's Rush:</strong> THE KEY. All-out speed. Get there in 3 seconds. Disrupt everything. Fastest player = biggest threat.</li>
+                            <li><strong>Pressure Forces Mistakes:</strong> Fast rush = bad throws. Zone coverage cleans up underneath.</li>
+                            <li><strong>Use Sparingly:</strong> 2-3 times per game max. Keep it special. High risk, high reward.</li>
+                            <li><strong>Noah Safety:</strong> Elite instincts help cover for aggressive rush. Turnover potential when QB panics.</li>
+                            <li><strong>High Risk/Reward:</strong> Can give up quick passes, but pressure creates turnovers and sacks.</li>
+                        </ul>
+                    </div>
+
+                    <div class="success-metric">
+                        <h4>✅ SUCCESS LOOKS LIKE:</h4>
+                        <p>Sack (Ronin speed arrives) • Forced panic throw into coverage • Interception (bad decision under pressure) • Incompletion (QB rushed, can't set feet)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- WHITE PACKAGE -->
+        <div id="white-package" class="package-detail">
+            <div class="package-header">
+                <div class="package-name" style="color: #999;">⚪ WHITE PACKAGE</div>
+                <button class="close-btn" onclick="hideAllPackagesInTab()">✕ CLOSE</button>
+            </div>
+
+            <div class="philosophy-box">
+                <h3>PHILOSOPHY: REST & DEVELOP</h3>
+                <p>Rest core 4 players (Noah, Ronin, Kane at times). Use when up 14+, to keep legs fresh. Frank at QB. Solid fundamentals - don't lose the game.</p>
+            </div>
+
+            <!-- OFFENSE WHITE -->
+            <div class="offense-defense-label offense-label">⚡ OFFENSE ⚡</div>
+            <div class="formation-section">
+                <div class="formation-header">
+                    <h2>⚡ OFFENSIVE FORMATION</h2>
+                    <div class="formation-type">BALANCED</div>
+                </div>
+
+                <div class="formation-grid">
+                    <div class="position-row">
+                        <div class="position-label">CENTER</div>
+                        <div class="position-details">
+                            <div class="player-name">Ryan</div>
+                            <div class="position-desc">Accurate snap. Hold LOS. Simple execution. Safety valve in flat if needed.</div>
+                        </div>
+                    </div>
+
+                    <div class="position-row">
+                        <div class="position-label">QB</div>
+                        <div class="position-details">
+                            <div class="player-name">Frank</div>
+                            <div class="position-desc">Backup QB. Manage the game. Safe decisions. Don't lose it. Check downs are your friend. Clock management.</div>
+                        </div>
+                    </div>
+
+                    <div class="position-row">
+                        <div class="position-label">Y (WR1)</div>
+                        <div class="position-details">
+                            <div class="player-name">Kamran</div>
+                            <div class="position-desc">Best hands on this unit. Frank's primary target. Run precise routes. Help your QB by being reliable.</div>
+                        </div>
+                    </div>
+
+                    <div class="position-row">
+                        <div class="position-label">X (WR2)</div>
+                        <div class="position-details">
+                            <div class="player-name">Eli</div>
+                            <div class="position-desc">Stretch field with deep routes. Keep defense honest. Even if you don't get targets, create space for others.</div>
+                        </div>
+                    </div>
+
+                    <div class="position-row">
+                        <div class="position-label">A (Slot/RB2)</div>
+                        <div class="position-details">
+                            <div class="player-name">Cameron</div>
+                            <div class="position-desc">Still have speed threat. Screens, quick passes. Give him ball in space - fastest player on this unit.</div>
+                        </div>
+                    </div>
+
+                    <div class="position-row">
+                        <div class="position-label">Z (RB1)</div>
+                        <div class="position-details">
+                            <div class="player-name">Colton</div>
+                            <div class="position-desc">One core player stays in. Leadership. Run game foundation. Keep offense moving forward.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="coaching-points">
+                    <h4>🎯 OFFENSIVE KEYS</h4>
+                    <ul>
+                        <li><strong>Keep Simple:</strong> Frank runs basic plays. Don't overcomplicate.</li>
+                        <li><strong>Kamran Safety Valve:</strong> When in doubt, throw to best hands.</li>
+                        <li><strong>Colton Leadership:</strong> Core player helps younger guys execute.</li>
+                        <li><strong>Cameron Speed:</strong> Still dangerous. One touch can break game open.</li>
+                        <li><strong>Manage Game:</strong> Don't turn it over. First downs keep defense rested.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- DEFENSE WHITE -->
+            <div class="offense-defense-label defense-label">🛡️ DEFENSE 🛡️</div>
+            <div class="formation-section">
+                <div class="formation-header">
+                    <h2>🛡️ DEFENSIVE ALIGNMENT</h2>
+                    <div class="formation-type">1-1-4 (Steady + RB Watch)</div>
+                </div>
+
+                <div class="defense-scheme">
+                    <div class="scheme-title">FORMATION: 1 Rusher, 1 Line (RB Watch), 4 Coverage</div>
+                    <p style="color: #aaa; margin-bottom: 20px;">Philosophy: Solid fundamentals. Nothing fancy. Execute basics correctly and don't give up big plays.</p>
+
+                    <div class="defense-formation">
+                        <div class="defense-line">
+                            <div class="defense-role">RUSH (10yd)</div>
+                            <div class="defense-player">Frank</div>
+                            <div class="defense-responsibility">Steady pressure. Don't over-pursue. Controlled rush. Just affect timing - don't need spectacular play. Consistency wins.</div>
+                        </div>
+
+                        <div class="defense-line">
+                            <div class="defense-role">LINE (LOS)</div>
+                            <div class="defense-player">Kamran</div>
+                            <div class="defense-responsibility">⚠️ CRITICAL: Watch RB. Mirror his movements. Call "HANDOFF!" loud when you see it. After pass, cover RB or nearest receiver. CANNOT cross LOS until pass/handoff.</div>
+                        </div>
+
+                        <div class="defense-line coverage">
+                            <div class="defense-role">ZONE (Short)</div>
+                            <div class="defense-player">Eli</div>
+                            <div class="defense-responsibility">Cover 0-10 yard zone. Simple assignment. Stay in your area. Eyes on QB. Break on ball when thrown.</div>
+                        </div>
+
+                        <div class="defense-line coverage">
+                            <div class="defense-role">COVER (Man)</div>
+                            <div class="defense-player">Ryan</div>
+                            <div class="defense-responsibility">Man coverage on their WR3 or zone help. Do your job. Stay disciplined. Communicate with safeties.</div>
+                        </div>
+
+                        <div class="defense-line safety">
+                            <div class="defense-role">SAFETY (Deep)</div>
+                            <div class="defense-player">Colton</div>
+                            <div class="defense-responsibility">Deep left third. Core player leadership. Communication. Make calls. Prevent big plays. Elite athlete prevents disaster.</div>
+                        </div>
+
+                        <div class="defense-line safety">
+                            <div class="defense-role">SAFETY (Deep)</div>
+                            <div class="defense-player">Cameron</div>
+                            <div class="defense-responsibility">Deep right third. Fastest player has range. Cover deep zone. Help on any deep throw. Speed = insurance policy.</div>
+                        </div>
+                    </div>
+
+                    <div class="key-points">
+                        <h4>🔑 DEFENSIVE KEYS</h4>
+                        <ul>
+                            <li><strong>Kamran's RB Watch:</strong> Most critical role. Physical player watches RB. Don't cross early. Call out handoff loud.</li>
+                            <li><strong>Fundamentals Win:</strong> No fancy stuff. Just execute basics correctly. Bend don't break.</li>
+                            <li><strong>Elite Safeties:</strong> Colton and Cameron are best available athletes. Their speed prevents big plays.</li>
+                            <li><strong>Colton Leadership:</strong> Core player organizes this unit. Communication key. Make the calls.</li>
+                            <li><strong>Don't Lose Game:</strong> Force them to drive field. Be patient. Protect the lead.</li>
+                        </ul>
+                    </div>
+
+                    <div class="success-metric">
+                        <h4>✅ SUCCESS LOOKS LIKE:</h4>
+                        <p>No big plays allowed • Solid tackle on short gains • Force 4th down • Protect the lead • Keep core players (Noah/Ronin/Kane) rested</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- GREEN PACKAGE -->
+        <div id="green-package" class="package-detail">
+            <div class="package-header">
+                <div class="package-name" style="color: #388e3c;">🟢 GREEN PACKAGE</div>
+                <button class="close-btn" onclick="hideAllPackagesInTab()">✕ CLOSE</button>
+            </div>
+
+            <div class="philosophy-box">
+                <h3>PHILOSOPHY: FRESH LEGS ROTATION</h3>
+                <p>Smart rotation package. Use on 2nd & Long or when need breather. Mix of quality players with fresh legs. Maintain high level of play.</p>
+            </div>
+
+            <!-- OFFENSE GREEN -->
+            <div class="offense-defense-label offense-label">⚡ OFFENSE ⚡</div>
+            <div class="formation-section">
+                <div class="formation-header">
+                    <h2>⚡ OFFENSIVE FORMATION</h2>
+                    <div class="formation-type">SPREAD</div>
+                </div>
+
+                <div class="formation-grid">
+                    <div class="position-row">
+                        <div class="position-label">CENTER</div>
+                        <div class="position-details">
+                            <div class="player-name">Kamran</div>
+                            <div class="position-desc">Reliable snap. Release on route. Safety valve. Best hands at center position.</div>
+                        </div>
+                    </div>
+
+                    <div class="position-row">
+                        <div class="position-label">QB</div>
+                        <div class="position-details">
+                            <div class="player-name">Ryan</div>
+                            <div class="position-desc">Backup QB leads this unit. Smart decisions. Manage the game. Lead with confidence.</div>
+                        </div>
+                    </div>
+
+                    <div class="position-row">
+                        <div class="position-label">Y (WR1)</div>
+                        <div class="position-details">
+                            <div class="player-name">Kane</div>
+                            <div class="position-desc">Primary target. Core connection with Noah remains. Trustworthy hands. First option on key downs.</div>
+                        </div>
+                    </div>
+
+                    <div class="position-row">
+                        <div class="position-label">X (WR2)</div>
+                        <div class="position-details">
+                            <div class="player-name">Eli</div>
+                            <div class="position-desc">Deep threat option. Stretch field. Keep defense from loading box. Run honest routes.</div>
+                        </div>
+                    </div>
+
+                    <div class="position-row">
+                        <div class="position-label">A (Slot/RB2)</div>
+                        <div class="position-details">
+                            <div class="player-name">Ronin</div>
+                            <div class="position-desc">Elite speed in slot. Playmaker. Get him ball in space. Speed creates big plays.</div>
+                        </div>
+                    </div>
+
+                    <div class="position-row">
+                        <div class="position-label">Z (RB1)</div>
+                        <div class="position-details">
+                            <div class="player-name">Frank</div>
+                            <div class="position-desc">Run game. Screen options. Keep chains moving. Possession football.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="coaching-points">
+                    <h4>🎯 OFFENSIVE KEYS</h4>
+                    <ul>
+                        <li><strong>Noah + Kane:</strong> Core connection remains. Trust built-in.</li>
+                        <li><strong>Fresh Players:</strong> Different looks confuse defense. Mix speeds and styles.</li>
+                        <li><strong>Ryan Versatility:</strong> QB knowledge in slot position creates advantages.</li>
+                        <li><strong>Balanced Attack:</strong> Can run or pass equally. Keep defense honest.</li>
+                        <li><strong>Execution Focus:</strong> Do your job. Simple is effective.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- DEFENSE GREEN -->
+            <div class="offense-defense-label defense-label">🛡️ DEFENSE 🛡️</div>
+            <div class="formation-section">
+                <div class="formation-header">
+                    <h2>🛡️ DEFENSIVE ALIGNMENT</h2>
+                    <div class="formation-type">1-1-4 (Rush + RB Watch)</div>
+                </div>
+
+                <div class="defense-scheme">
+                    <div class="scheme-title">FORMATION: 1 Rusher, 1 Line (RB Watch), 4 Coverage</div>
+                    <p style="color: #aaa; margin-bottom: 20px;">Philosophy: Solid rotation defense. Fresh legs with quality athletes. Execute fundamentals.</p>
+
+                    <div class="defense-formation">
+                        <div class="defense-line">
+                            <div class="defense-role">RUSH (10yd)</div>
+                            <div class="defense-player">Kamran</div>
+                            <div class="defense-responsibility">Physical rush. High effort. Affect QB timing. Good hands help in pursuit and flag pulling. Fresh legs give maximum effort.</div>
+                        </div>
+
+                        <div class="defense-line">
+                            <div class="defense-role">LINE (LOS)</div>
+                            <div class="defense-player">Ryan</div>
+                            <div class="defense-responsibility">Watch RB. Mirror movements. Call "HANDOFF!" when you see it. After pass, cover RB or nearest receiver. CANNOT cross until pass/handoff.</div>
+                        </div>
+
+                        <div class="defense-line coverage">
+                            <div class="defense-role">ZONE (Short)</div>
+                            <div class="defense-player">Eli</div>
+                            <div class="defense-responsibility">Cover 0-10 yard zone. Stay disciplined. Eyes on QB. Break on ball when thrown. Clog throwing lanes.</div>
+                        </div>
+
+                        <div class="defense-line coverage">
+                            <div class="defense-role">COVER (Man)</div>
+                            <div class="defense-player">Frank</div>
+                            <div class="defense-responsibility">Man coverage or zone help. Do your assignment. Stay focused. Help communicate coverage calls.</div>
+                        </div>
+
+                        <div class="defense-line safety">
+                            <div class="defense-role">SAFETY (Deep)</div>
+                            <div class="defense-player">Kane</div>
+                            <div class="defense-responsibility">Deep left third. Elite athlete covers deep zone. Physical player competes for ball in air. Prevent big plays.</div>
+                        </div>
+
+                        <div class="defense-line safety">
+                            <div class="defense-role">SAFETY (Deep)</div>
+                            <div class="defense-player">Ronin</div>
+                            <div class="defense-responsibility">Deep right third. Elite speed provides range. Ball hawk with instincts. Read QB eyes. Speed covers ground. Nothing gets behind.</div>
+                        </div>
+                    </div>
+
+                    <div class="key-points">
+                        <h4>🔑 DEFENSIVE KEYS</h4>
+                        <ul>
+                            <li><strong>Kamran Rush:</strong> Physical player with fresh legs. Maximum effort. Affect timing even without sack.</li>
+                            <li><strong>Ryan RB Watch:</strong> Read handoff perfectly. Mirror RB movements. Critical assignment - don't cross early.</li>
+                            <li><strong>Elite Safeties:</strong> Kane and Noah are best athletes available. Their range and instincts prevent big plays.</li>
+                            <li><strong>Noah Ball Hawk:</strong> Best athlete creates turnover opportunities. Anticipation is elite. Game-changing potential.</li>
+                            <li><strong>Quality Rotation:</strong> Don't drop off from other packages. Fresh players execute at high level.</li>
+                        </ul>
+                    </div>
+
+                    <div class="success-metric">
+                        <h4>✅ SUCCESS LOOKS LIKE:</h4>
+                        <p>Turnover (Noah picks) • Pass breakup (Kane/Noah range) • Stop for minimal gain • Maintain momentum • Fresh players execute perfectly</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PLAYERS TAB -->
+    <div id="players-tab" class="tab-content">
+        <h2 style="color: #00d4ff; margin-bottom: 25px; text-align: center; font-size: 28px;">👥 PLAYER ASSIGNMENT REFERENCE</h2>
+        <p style="text-align: center; color: #888; margin-bottom: 30px; font-size: 16px;">Each player's complete package assignments - what color wristband they wear and what they do</p>
+
+        <div class="player-grid">
+            <!-- Ronin -->
+            <div class="player-card">
+                <div class="player-card-header">RONIN (4 packages)</div>
+                <div class="assignment">
+                    <span class="assignment-color badge-red">RED</span>
+                    <span class="assignment-role">X-WR2 Deep (Offense) • Safety Deep Elite (Defense)</span>
+                </div>
+                <div class="assignment">
+                    <span class="assignment-color badge-blue">BLUE</span>
+                    <span class="assignment-role">X-WR2 Deep (Offense) • Zone Short Speed (Defense)</span>
+                </div>
+                <div class="assignment">
+                    <span class="assignment-color badge-yellow">YLW</span>
+                    <span class="assignment-role">Y-WR1 (Offense) • Rush 10yd SPEED ⚡ (Defense)</span>
+                </div>
+                <div class="assignment">
+                    <span class="assignment-color badge-green">GRN</span>
+                    <span class="assignment-role">A-Slot Speed (Offense) • Safety Deep Elite (Defense)</span>
+                </div>
+            </div>
+
+            <!-- Kane -->
+            <div class="player-card">
+                <div class="player-card-header">KANE (4 packages)</div>
+                <div class="assignment">
+                    <span class="assignment-color badge-red">RED</span>
+                    <span class="assignment-role">Y-WR1 Primary (Offense) • Cover Man Elite Lockdown (Defense)</span>
+                </div>
+                <div class="assignment">
+                    <span class="assignment-color badge-blue">BLUE</span>
+                    <span class="assignment-role">A-Slot (Offense) • Rush 10yd Inside (Defense)</span>
+                </div>
+                <div class="assignment">
+                    <span class="assignment-color badge-yellow">YLW</span>
+                    <span class="assignment-role">X-WR2 (Offense) • Zone Short (Defense)</span>
+                </div>
+                <div class="assignment">
+                    <span class="assignment-color badge-green">GRN</span>
+                    <span class="assignment-role">Y-WR1 Primary (Offense) • Safety Deep Elite (Defense)</span>
+                </div>
+            </div>
+
+            <!-- Colton -->
+            <div class="player-card">
+                <div class="player-card-header">COLTON (4 packages)</div>
+                <div class="assignment">
+                    <span class="assignment-color badge-red">RED</span>
+                    <span class="assignment-role">A-Slot Versatile (Offense) • Cover Man Physical (Defense)</span>
+                </div>
+                <div class="assignment">
+                    <span class="assignment-color badge-blue">BLUE</span>
+                    <span class="assignment-role">Y-WR1 Reliable (Offense) • Rush 10yd Outside (Defense)</span>
+                </div>
+                <div class="assignment">
+                    <span class="assignment-color badge-yellow">YLW</span>
+                    <span class="assignment-role">Z-RB1 Speed (Offense) • Rush 10yd Contain (Defense)</span>
+                </div>
+                <div class="assignment">
+                    <span class="assignment-color badge-white">WHT</span>
+                    <span class="assignment-role">Z-RB1 Leader (Offense) • Safety Deep Leader (Defense)</span>
+                </div>
+            </div>
+
+            <!-- Noah -->
+            <div class="player-card">
+                <div class="player-card-header">NOAH (3 packages)</div>
+                <div class="assignment">
+                    <span class="assignment-color badge-red">RED</span>
+                    <span class="assignment-role">QB (Offense) • Safety Deep (Defense)</span>
+                </div>
+                <div class="assignment">
+                    <span class="assignment-color badge-blue">BLUE</span>
+                    <span class="assignment-role">QB (Offense) • Safety Deep Left (Defense)</span>
+                </div>
+                <div class="assignment">
+                    <span class="assignment-color badge-yellow">YLW</span>
+                    <span class="assignment-role">A-Slot ⭐ MISMATCH (Offense) • Safety Deep (Defense)</span>
+                </div>
+            </div>
+
+            <!-- Kamran -->
+            <div class="player-card">
+                <div class="player-card-header">KAMRAN (3 packages)</div>
+                <div class="assignment">
+                    <span class="assignment-color badge-red">RED</span>
+                    <span class="assignment-role">Center Best Hands (Offense) • Line RB Watch ⚠️ (Defense)</span>
+                </div>
+                <div class="assignment">
+                    <span class="assignment-color badge-white">WHT</span>
+                    <span class="assignment-role">Y-WR1 Primary (Offense) • Line RB Watch ⚠️ (Defense)</span>
+                </div>
+                <div class="assignment">
+                    <span class="assignment-color badge-green">GRN</span>
+                    <span class="assignment-role">Center (Offense) • Rush 10yd Physical (Defense)</span>
+                </div>
+            </div>
+
+            <!-- Cameron -->
+            <div class="player-card">
+                <div class="player-card-header">CAMERON (3 packages)</div>
+                <div class="assignment">
+                    <span class="assignment-color badge-red">RED</span>
+                    <span class="assignment-role">Z-RB1 FASTEST (Offense) • Rush 10yd SPEED ⚡ (Defense)</span>
+                </div>
+                <div class="assignment">
+                    <span class="assignment-color badge-blue">BLUE</span>
+                    <span class="assignment-role">Z-RB1 Edge Speed (Offense) • Zone Short Speed (Defense)</span>
+                </div>
+                <div class="assignment">
+                    <span class="assignment-color badge-white">WHT</span>
+                    <span class="assignment-role">A-Slot Speed (Offense) • Safety Deep Fastest (Defense)</span>
+                </div>
+            </div>
+
+            <!-- Eli -->
+            <div class="player-card">
+                <div class="player-card-header">ELI (3 packages)</div>
+                <div class="assignment">
+                    <span class="assignment-color badge-yellow">YLW</span>
+                    <span class="assignment-role">Center (Offense) • Safety Deep (Defense)</span>
+                </div>
+                <div class="assignment">
+                    <span class="assignment-color badge-white">WHT</span>
+                    <span class="assignment-role">X-WR2 Deep (Offense) • Zone Short (Defense)</span>
+                </div>
+                <div class="assignment">
+                    <span class="assignment-color badge-green">GRN</span>
+                    <span class="assignment-role">X-WR2 (Offense) • Rush 10yd (Defense)</span>
+                </div>
+            </div>
+
+            <!-- Frank -->
+            <div class="player-card">
+                <div class="player-card-header">FRANK (3 packages)</div>
+                <div class="assignment">
+                    <span class="assignment-color badge-blue">BLUE</span>
+                    <span class="assignment-role">Center (Offense) • Safety Deep Right (Defense)</span>
+                </div>
+                <div class="assignment">
+                    <span class="assignment-color badge-white">WHT</span>
+                    <span class="assignment-role">QB Backup (Offense) • Rush 10yd (Defense)</span>
+                </div>
+                <div class="assignment">
+                    <span class="assignment-color badge-green">GRN</span>
+                    <span class="assignment-role">Z-RB1 (Offense) • Zone Short (Defense)</span>
+                </div>
+            </div>
+
+            <!-- Ryan -->
+            <div class="player-card">
+                <div class="player-card-header">RYAN (3 packages + Backup QB)</div>
+                <div class="assignment">
+                    <span class="assignment-color badge-yellow">YLW</span>
+                    <span class="assignment-role">QB Backup (Offense) • Zone Short (Defense)</span>
+                </div>
+                <div class="assignment">
+                    <span class="assignment-color badge-white">WHT</span>
+                    <span class="assignment-role">Center (Offense) • Cover Zone/Man (Defense)</span>
+                </div>
+                <div class="assignment">
+                    <span class="assignment-color badge-green">GRN</span>
+                    <span class="assignment-role">QB Backup (Offense) • Line RB Watch ⚠️ (Defense)</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- RULES TAB -->
+    <div id="rules-tab" class="tab-content">
+        <h2 style="color: #00d4ff; margin-bottom: 25px; text-align: center; font-size: 28px;">📖 PYLON2PYLON RULES REFERENCE</h2>
+
+        <div class="rules-box">
+            <h3>⚠️ CRITICAL RULES - MEMORIZE THESE</h3>
+            <ul>
+                <li><strong>10-YARD RUSH:</strong> Rusher must start 10 yards from QB (referee marks the spot). Cannot rush until ball is snapped.</li>
+                <li><strong>5-SECOND CLOCK:</strong> QB has 5 seconds from snap to throw or hand off. Clock shown by referee. After 5 seconds = sack.</li>
+                <li><strong>LINE PLAYER (RB Watch):</strong> Cannot cross line of scrimmage until pass is thrown OR handoff occurs. Most penalized rule - be patient! QB cannot run, so focus on watching the RB for handoffs.</li>
+                <li><strong>NO BLOCKING:</strong> Zero contact allowed. No picks, screens, or obstruction. Pure speed and skill.</li>
+                <li><strong>FLAG PULL:</strong> Two-hand touch anywhere on belt = runner is down. One-hand doesn't count.</li>
+                <li><strong>NO CONTACT:</strong> Can't jam receivers at line. Must stay 1 yard away. Use footwork and speed to stay close.</li>
+                <li><strong>SUBSTITUTIONS:</strong> Unlimited - coach controls all subs. Use your wristband colors!</li>
+                <li><strong>QB CANNOT RUN:</strong> QB must throw or hand off. No scrambles. Line player watches RB, not QB.</li>
+            </ul>
+        </div>
+
+        <div class="coaching-points" style="margin-top: 30px;">
+            <h4>🎯 QUICK REFERENCE - DEFENSIVE SCHEMES</h4>
+            <ul>
+                <li><strong>1-1-4:</strong> 1 Rusher (10yd), 1 Line (spy), 4 Coverage. Used in RED, WHITE, GREEN. Prevents big plays.</li>
+                <li><strong>2-0-4:</strong> 2 Rushers (10yd), 0 Line, 4 Coverage. Used in BLUE, YELLOW. Double pressure forces mistakes.</li>
+                <li><strong>Man Coverage:</strong> Stick to your receiver. Stay between them and goal line. Break on ball.</li>
+                <li><strong>Zone Coverage:</strong> Cover your area. Eyes on QB. Let receivers come to you. Break when thrown.</li>
+                <li><strong>Deep Safety:</strong> 15-20 yards deep. Last line of defense. Nothing gets behind you. Help over top.</li>
+            </ul>
+        </div>
+
+        <div class="success-metric" style="margin-top: 30px;">
+            <h4>✅ GAME DAY CHECKLIST</h4>
+            <p>
+                ✓ Each player has wristband with their colors<br>
+                ✓ Know your package assignments (check Player Reference tab)<br>
+                ✓ Warm up: practice snaps, routes, flag pulling<br>
+                ✓ Hydrate between packages<br>
+                ✓ Communicate on field - talk constantly<br>
+                ✓ Have fun and play hard!
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Tab switching
+        function switchTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Remove active from all buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabName + '-tab').classList.add('active');
+            
+            // Highlight button
+            event.target.classList.add('active');
+            
+            // If showing packages tab, show ALL packages
+            if (tabName === 'packages') {
+                document.querySelectorAll('.package-detail').forEach(pkg => {
+                    pkg.classList.add('active');
+                });
+            }
+            
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Package navigation from situations
+        function showPackage(color) {
+            // Switch to packages tab
+            switchTab('packages');
+            
+            // Small delay to let tab switch, then scroll to package
+            setTimeout(() => {
+                const packageDiv = document.getElementById(color + '-package');
+                if (packageDiv) {
+                    packageDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }, 100);
+        }
+
+        // Hide all packages
+        function hideAllPackagesInTab() {
+            // Not used anymore - kept for compatibility
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // Number keys for quick package access
+            if (e.key === '1') showPackage('red');
+            if (e.key === '2') showPackage('blue');
+            if (e.key === '3') showPackage('yellow');
+            if (e.key === '4') showPackage('white');
+            if (e.key === '5') showPackage('green');
+        });
+
+        // Initial state - show all packages by default in packages tab
+        document.addEventListener('DOMContentLoaded', function() {
+            // Show all packages on load if on packages tab
+            const packagesTab = document.getElementById('packages-tab');
+            if (packagesTab && packagesTab.classList.contains('active')) {
+                document.querySelectorAll('.package-detail').forEach(pkg => {
+                    pkg.classList.add('active');
+                });
+            }
+        });
+    </script>
+</body>
+</html>
